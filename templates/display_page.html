@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ask mate</title>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                {% for title in data[0] %}
+                <th> {{ title.capitalize() }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+        {% for line in range(data| length - 1) %}
+        <tr>
+            {% for element in data[line + 1] %}
+            <td>{{ element }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
