@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Questions</title>
+    <style>
+        *
+    {
+        margin-top: 30px;
+        margin-left: 30px;
+        margin-right: 30px;
+    }
+
+</style>
+
+</head>
+
+<body>
+
+
+
+                <p>{{ question_id }}</p>
+                <p>{{question}}</p>
+                <p>{{q_message}}</p>
+
+
+            {%for line in answers%}
+            <p>
+                    {{line[4]}}
+
+            </p>
+            {%endfor%}
+
+</body>
+</html>
