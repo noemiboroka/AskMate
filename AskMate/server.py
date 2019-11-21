@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-from AskMate import data_manager, util
+import data_manager, util
 from datetime import datetime
 
 app = Flask(__name__)
@@ -87,20 +87,26 @@ def add_new_answer(question_id):
                         '')
 
     return render_template('add_answer.html', question_id = question_id)
-@app.route('/question/<question_id>/edit')
+@app.route('/question/<question_id>/edit', methods=['POST','GET'])
 def edit_question(question_id):
     question_data_table = data_manager.read_file(filename_questions)
 
-    question_index =
+    if request.method == 'POST':
+        for row in question_data_table:
+            if row[0] == question_id:
+                row[4] = request.form.get('q_title')
+                row[5] = request.form.get('q_message')
+                data_manager.write_file(filename_questions, question_data_table)
+                return redirect(f'/question/{question_id}')
 
     for row in question_data_table:
-
         if row[0] == question_id:
             question_title = row[4]
             question_mess = row[5]
 
-    return render_template('edit_question.html', question_id = question_id, question_title = question_title,
+    return render_template('edit_question.html', question_id=question_id, question_title = question_title,
                            question_mess = question_mess )
+
 
 if __name__ == '__main__':
     app.run(

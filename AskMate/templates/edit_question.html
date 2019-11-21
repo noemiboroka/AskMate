@@ -18,16 +18,14 @@
 
 <h2> Modification </h2>
 
-<form action="", method="POST">
+<form action="/question/{{question_id}}/edit", method="POST">
 
     <legend> New Title </legend>
     <input type="text" name="q_title" value={{question_title}}><br>
 
     <legend>New Question</legend>
     <textarea name="q_message" cols="50" rows="10" required> {{question_mess}} </textarea>
-
-
-
+    <button type="submit">press that shit niga</button>
 
 </form>
 </body>
