@@ -9,6 +9,7 @@
         margin-top: 30px;
         margin-left: 30px;
         margin-right: 30px;
+        text-align: center;
     }
 
 </style>
@@ -17,19 +18,19 @@
 
 <body>
 
-
+<h1>Question</h1>
 
                 <p>{{ question_id }}</p>
                 <p>{{question}}</p>
                 <p>{{q_message}}</p>
 
-
+<h1> Answers </h1>
             {%for line in answers%}
             <p>
                     {{line[4]}}
 
             </p>
             {%endfor%}
-
+<a href="{{url_for('add_new_answer', question_id = question_id)}}"> Add New Answer </a>
 </body>
 </html>

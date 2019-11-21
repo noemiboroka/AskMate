@@ -16,12 +16,14 @@ answer_id_list = [row[0] for row in answers_data_table[1:]]
 @app.route('/')
 @app.route('/list')
 def route_list():
-    questions_data_table = data_manager.read_file(filename_questions)
 
-    return render_template('display_page.html', data_table = questions_data_table)
+    return render_template('display_page.html', data_table = question_data_table)
 
 @app.route("/question/<question_id>")
 def question_display(question_id):
+    question_data_table = data_manager.read_file(filename_questions)
+    answers_data_table = data_manager.read_file(filename_answers)
+
 
     list_of_answers = []
     asked_question = None
@@ -38,10 +40,13 @@ def question_display(question_id):
             list_of_answers.append(row)
 
 
-    return render_template('display_question.html',question = asked_question, q_message = question_message, answers = list_of_answers )
+    return render_template('display_question.html',question_id = question_id,question = asked_question, q_message = question_message, answers = list_of_answers )
 
 @app.route('/add_question', methods=["POST", "GET"])
 def add_question():
+    question_data_table = data_manager.read_file(filename_questions)
+    question_id_list = [row[0] for row in question_data_table[1:]]
+
     new_id = util.det_new_id(question_id_list)
     new_question_list = [new_id]
     for num in range(3):
@@ -60,6 +65,25 @@ def add_question():
 
     return render_template('add_question.html')
 
+@app.route("/question/<question_id>/new-answer", methods=["POST", "GET"])
+def add_new_answer(question_id):
+    answers_data_table = data_manager.read_file(filename_answers)
+    answer_id_list = [row[0] for row in answers_data_table[1:]]
+    if request.method == "POST":
+        new_id = util.det_new_id(answer_id_list)
+        new_answer_list = [new_id]
+
+        for num in range(2):
+            new_answer_list.append("0")
+        new_answer_list.append(question_id)
+        new_answer_list.append(request.form.get('message'))
+        new_answer_list.append(" ")
+        answers_data_table.append(new_answer_list)
+        data_manager.write_file(filename_answers, answers_data_table)
+        return redirect('/'
+                        '')
+
+    return render_template('add_answer.html', question_id = question_id)
 
 if __name__ == '__main__':
     app.run(
