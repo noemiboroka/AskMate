@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
-from AskMate import data_manager
-from AskMate import util
+from AskMate import data_manager, util
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -16,7 +16,7 @@ answer_id_list = [row[0] for row in answers_data_table[1:]]
 @app.route('/')
 @app.route('/list')
 def route_list():
-
+    question_data_table = data_manager.read_file(filename_questions)
     return render_template('display_page.html', data_table = question_data_table)
 
 @app.route("/question/<question_id>")
@@ -49,7 +49,10 @@ def add_question():
 
     new_id = util.det_new_id(question_id_list)
     new_question_list = [new_id]
-    for num in range(3):
+    timestamp = 1545730073
+    time = datetime.fromtimestamp(timestamp)
+    new_question_list.append(time)
+    for num in range(2):
         new_question_list.append("0")
 
     if request.method == "POST":
@@ -84,6 +87,20 @@ def add_new_answer(question_id):
                         '')
 
     return render_template('add_answer.html', question_id = question_id)
+@app.route('/question/<question_id>/edit')
+def edit_question(question_id):
+    question_data_table = data_manager.read_file(filename_questions)
+
+    question_index =
+
+    for row in question_data_table:
+
+        if row[0] == question_id:
+            question_title = row[4]
+            question_mess = row[5]
+
+    return render_template('edit_question.html', question_id = question_id, question_title = question_title,
+                           question_mess = question_mess )
 
 if __name__ == '__main__':
     app.run(
