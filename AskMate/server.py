@@ -108,6 +108,16 @@ def edit_question(question_id):
                            question_mess = question_mess )
 
 
+@app.route('/delete/<question_id>')
+def delete_question(question_id):
+    question_data_table = data_manager.read_file(filename_questions)
+
+    for row in question_data_table:
+        if row[0] == question_id:
+            question_data_table.remove(row)
+            data_manager.write_file(filename_questions, question_data_table)
+            return redirect('/')
+
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
