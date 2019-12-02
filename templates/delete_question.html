@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Question</title>
+    <style>
+        *
+        {
+            text-align: center;
+            padding: 10px;
+        }
+
+    </style>
+</head>
+<body>
+<h1> Delete </h1>
+<p>{{ question_mess }}</p>
+<form action="/delete/{{question_id}}" method="post">
+
+    <button type="submit">Remove questions HERE</button>
+</form>
+</body>
+</html>
