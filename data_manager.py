@@ -34,6 +34,15 @@ import time
 
 
 @database_common.connection_handler
+def read_answer(cursor):
+    cursor.execute("""
+                    SELECT * FROM answer;
+                    """)
+    answers = cursor.fetchall()
+    return answers
+
+
+@database_common.connection_handler
 def read_all_questions(cursor):
     cursor.execute("""
                     SELECT * FROM question;
@@ -69,6 +78,37 @@ def add_question(cursor, new_question):
                         """, new_question)
 
 
+@database_common.connection_handler
+def add_answer(cursor, new_answer):
+    cursor.execute("""
+                            INSERT INTO answer(id, submission_time, vote_number,question_id, message, image) 
+                            VALUES (%(id)s,%(submission_time)s, %(vote_number)s, %(question_id)s,%(message)s,
+                            %(image)s);
+                            """, new_answer)
+
+
+@database_common.connection_handler
+def delete_question(cursor, id_):
+    cursor.execute("""
+                    DELETE FROM comment WHERE question_id=%(question_id_)s;
+                    DELETE FROM comment WHERE answer_id 
+                    IN (SELECT id FROM answer WHERE question_id =%(question_id_)s);
+                    """, {'question_id_': id_})
+    cursor.execute("""
+                        DELETE FROM answer WHERE question_id= %(id_)s;
+                        DELETE FROM question WHERE id= %(id_)s
+                        """,
+                   {'id_': id_})
+
+
+@database_common.connection_handler
+def delete_answer(cursor, id_):
+    cursor.execute("""
+                    DELETE FROM answer WHERE id= %(id_)s 
+                    """,
+                   {'id_': id_})
+
+
 def sorted_by_submission_time(list_of_dicts):
     n = len(list_of_dicts)
     for i in range(n):
@@ -84,6 +124,16 @@ def get_new_question_id():
     questions = read_all_questions()
     max_id = "0"
     for i in questions:
+        if int(max_id) < int(i['id']):
+            max_id = i['id']
+    max_id = int(max_id) + 1
+    return str(max_id)
+
+
+def get_new_answer_id():
+    answers = read_answer()
+    max_id = "0"
+    for i in answers:
         if int(max_id) < int(i['id']):
             max_id = i['id']
     max_id = int(max_id) + 1

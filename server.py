@@ -39,6 +39,11 @@ def new_question():
     return render_template("add_question.html")
 
 
+@app.route('/question/<question_id>/new-answer')
+def new_answer(question_id):
+    return render_template("add_answer.html", question_id=question_id)
+
+
 @app.route('/submit-question', methods=['GET', 'POST'])
 def submit_question():
     if request.method == 'POST':
@@ -59,6 +64,41 @@ def submit_question():
         }
         data_manager.add_question(question_dict)
     return redirect('/question/'+id_)
+
+
+@app.route('/submit-answer', methods=['GET', 'POST'])
+def submit_answer():
+    if request.method == 'POST':
+        id_ = data_manager.get_new_answer_id()
+        submission_time = data_manager.convert_time(data_manager.get_current_unix_timestamp())
+        votes = 0
+        question_id = request.form['question_id']
+        message = request.form['message']
+        answer_dict = {
+            'id': id_,
+            'submission_time': submission_time,
+            'vote_number': votes,
+            'question_id': question_id,
+            'message': message,
+            'image': None
+        }
+        data_manager.add_answer(answer_dict)
+    return redirect('/question/'+question_id)
+
+
+@app.route('/delete-question/<question_id>')
+def delete_question(question_id):
+    data_manager.delete_question(question_id)
+    return redirect('/list')
+
+
+@app.route('/answer/<question_id>/delete-answer/<answer_id>')
+def delete_answer(question_id, answer_id):
+    # data_manager.delete_all_comments_from_answer(answer_id)
+    data_manager.delete_answer(answer_id)
+    return redirect('/question/'+question_id)
+
+
 
 """
 @app.route("/question/<question_id>")

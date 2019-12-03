@@ -1,17 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Add Answer</title>
+    <meta charset="utf-8">
+    <title>Ask a question</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <h1>WELCOME!</h1>
 </head>
+
 <body>
-<p>{{question_id}}</p>
-<form action="" method="POST">
+    <form method="POST" action="/submit-answer">
 
-    <textarea name="message" , placeholder="Type something nice!" rows="50" cols="50" required></textarea>
+        Message:
+        <br>
+        <textarea name="message" id="message" rows="6" cols="40" minlength="10"></textarea>
+        <input type="hidden" value="{{question_id}}" name="question_id" id="question_id" />
+        <br>
+        <input type="submit" value="Submit">
 
-    <button type="submit">Post Answer!</button>
-
-</form>
+    </form>
 </body>
 </html>
