@@ -19,18 +19,46 @@ answer_id_list = [row[0] for row in answers_data_table[1:]]
 @app.route('/')
 @app.route('/list')
 def route_list():
-    questions = data_manager.get_questions()
-    i_d = "ID"
-    submission_time_ = "Submission Time"
-    view_number_ = "View Number"
-    vote_number_ = "Vote Number"
-    title_ = "Title"
-    message_ = "Message"
-    image_ = "Image"
-    return render_template('display_page.html', questions=questions, i_d=i_d, view_number_=view_number_,
-                           vote_number_=vote_number_, submission_time_=submission_time_,
-                           title_=title_, message_=message_, image_=image_)
 
+    questions_dict = data_manager.read_all_questions()
+    questions_dict = data_manager.sorted_by_submission_time(questions_dict)
+    return render_template("index.html", questions_dict=questions_dict)
+
+
+@app.route("/question/<question_id>")
+def route_question(question_id):
+
+    questions = data_manager.read_a_question(question_id)
+    answers_list = data_manager.answer_by_question_id(question_id)
+
+    return render_template("question.html", question_id=question_id, questions=questions, answers_list=answers_list)
+
+
+@app.route('/new-question')
+def new_question():
+    return render_template("add_question.html")
+
+
+@app.route('/submit-question', methods=['GET', 'POST'])
+def submit_question():
+    if request.method == 'POST':
+        id_ = data_manager.get_new_question_id()
+        submission_time = data_manager.convert_time(data_manager.get_current_unix_timestamp())
+        title = request.form['title']
+        message = request.form['message']
+        views = 0
+        votes = 0
+        question_dict = {
+            'id': id_,
+            'submission_time': submission_time,
+            'view_number': views,
+            'vote_number': votes,
+            'title': title,
+            'message': message,
+            'image': None
+        }
+        data_manager.add_question(question_dict)
+    return redirect('/question/'+id_)
 
 """
 @app.route("/question/<question_id>")

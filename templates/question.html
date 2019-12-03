@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{{questions.title}} </title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    {% block content %}
+    {% for question in questions %}
+    <div class="header"> <h1>{{question.title}}</h1></div>
+</head>
+<body><br>
+        <h4 class="question-message">{{question.message}}</h4><br>
+        <h4>
+        <p>{{'View Number: '+question.view_number|string}}</p>
+        <p>{{'Votes: '+question.vote_number|string}}</p>
+        <p>{{'Posted: '+question.submission_time|string}} </p>
+        </h4>
+        <p></p>
+        <h4>
+            <a href="/">Back</a>
+            <a href="/question/{{question.id}}/new-answer">Answer</a>
+            <a href="/delete-question/{{question.id}}">Delete this question</a>
+            <a href="/question/{{ question.id|int}}/q-comment">Comments</a>
+        </h4>
+
+    {% endfor %}
+     <h4>Answers:</h4>
+    {% for answer in answers_list %}
+        <p>
+        <h4>{{answer.message}}</h4>
+        </p>
+        <p>Votes: {{answer.vote_number}} <a href="">▲</a> <a href="">▼</a>  Posted: {{answer.submission_time}}
+            {% for question in questions %}
+            <a href="/answer/{{ question.id}}/delete-answer/{{ answer.id }}">Delete </a>
+            {% endfor %}
+            <a href="/question/{{ num|int}}/edit-answer/{{ answer.id }}">Update</a>
+            <a href="/question/{{ num }}/a-comment/{{ answer.id }}">Comments</a>
+        </p>
+        <p></p>
+        {%endfor%}
+{% endblock %}
+</body>
+</html>
