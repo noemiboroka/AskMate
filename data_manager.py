@@ -54,8 +54,10 @@ def read_all_questions(cursor):
 @database_common.connection_handler
 def read_a_question(cursor, id_):
     cursor.execute("""
-                    SELECT * FROM question WHERE id=%(id_)s;
-                    """, {'id_': id_})
+                    SELECT * FROM question
+                    WHERE id=%(id_)s;
+                    """,
+                   {'id_': id_})
     questions = cursor.fetchall()
     return questions
 
@@ -63,8 +65,10 @@ def read_a_question(cursor, id_):
 @database_common.connection_handler
 def answer_by_question_id(cursor, id_):
     cursor.execute("""
-                    SELECT * FROM answer WHERE question_id=%(id_)s;
-                    """, {'id_': id_})
+                    SELECT * FROM answer
+                    WHERE question_id=%(id_)s;
+                    """,
+                   {'id_': id_})
     answers = cursor.fetchall()
     return answers
 
@@ -75,7 +79,8 @@ def add_question(cursor, new_question):
                         INSERT INTO question(id, submission_time, view_number, vote_number, title, message, image) 
                         VALUES (%(id)s,%(submission_time)s, %(view_number)s, %(vote_number)s,%(title)s,%(message)s,
                         %(image)s);
-                        """, new_question)
+                        """,
+                   new_question)
 
 
 @database_common.connection_handler
@@ -84,7 +89,8 @@ def add_answer(cursor, new_answer):
                             INSERT INTO answer(id, submission_time, vote_number,question_id, message, image) 
                             VALUES (%(id)s,%(submission_time)s, %(vote_number)s, %(question_id)s,%(message)s,
                             %(image)s);
-                            """, new_answer)
+                            """,
+                   new_answer)
 
 
 @database_common.connection_handler
@@ -104,9 +110,31 @@ def delete_question(cursor, id_):
 @database_common.connection_handler
 def delete_answer(cursor, id_):
     cursor.execute("""
-                    DELETE FROM answer WHERE id= %(id_)s 
+                    DELETE FROM answer
+                    WHERE id= %(id_)s 
                     """,
                    {'id_': id_})
+
+
+@database_common.connection_handler
+def update_question(cursor, question_update, id_):
+    cursor.execute("""
+                    UPDATE question
+                    SET message =%(question_update)s
+                    WHERE id= %(id_)s;
+                    """,
+                   {'question_update': question_update, 'id_': id_})
+
+
+@database_common.connection_handler
+def get_this_question(cursor, id_):
+    cursor.execute("""
+                    SELECT message FROM question
+                    WHERE id=%(id_)s;
+                    """,
+                   {'id_': id_})
+    questions = cursor.fetchall()
+    return questions
 
 
 def sorted_by_submission_time(list_of_dicts):

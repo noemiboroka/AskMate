@@ -99,8 +99,19 @@ def delete_answer(question_id, answer_id):
     return redirect('/question/'+question_id)
 
 
+@app.route('/question/<question_id>/edit-question', methods=['POST', 'GET'])
+def edit_question(question_id):
+    if request.method == 'POST':
+        update = request.form['message']
+        data_manager.update_question(update, question_id)
+        return redirect('/question/'+question_id)
+    elif request.method == 'GET':
+        question = data_manager.get_this_question(question_id)
+        return render_template('edit_question.html', question_id=question_id, question=question)
+
 
 """
+
 @app.route("/question/<question_id>")
 def question_display(question_id):
     question_data_table = data_manager.read_file(filename_questions)

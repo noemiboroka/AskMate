@@ -3,30 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit Question</title>
-    <style>
-        *
-        {
-            text-align: center;
-            padding: 10px;
-        }
-
-    </style>
+    <link rel="stylesheet" href="/static/css/main.css">
 </head>
 <body>
-<h1> Edit </h1>
+    {% block content %}
+        <a href="/question/{{ question_id }}">Back to question</a>
+        <form method="POST" action="/question/{{ question_id }}/edit-question">
 
+            Message:<br>
+            {% for message in question %}
+                <textarea name="message" id="message" rows="6" cols="40" minlength="10">{{ message.message }}</textarea>
+            {% endfor %}
+            <input type="hidden" value="{{ question_id }}" name="question_id" id="question_id" /><br>
+            <input type="submit" value="Submit">
 
-<h2> Modification </h2>
-
-<form action="/question/{{question_id}}/edit", method="POST">
-
-    <legend> New Title </legend>
-    <input type="text" name="q_title" value={{question_title}}><br>
-
-    <legend>New Question</legend>
-    <textarea name="q_message" cols="50" rows="10" required> {{question_mess}} </textarea>
-    <button type="submit">press that shit niga</button>
-
-</form>
+        </form>
+    {% endblock %}
 </body>
 </html>
