@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="/static/css/main.css">
 <head>
     <meta charset="utf-8">
-    <title> HOME </title>
+    <title> Ask Mate </title>
     <div class="header">
         <h1>WELCOME!</h1>
     </div>
@@ -14,9 +14,10 @@
         <p>
             <a href="question/{{ i['id'] }}" class="question-title"><h3>{{ i['title'] }}</h3></a>
         </p>
-        <p class="question-message">{{i['message']}}</p>
+        <p class="question-message">{{ i['message'] }}</p>
     {% endfor %}
-    <a href="{{ url_for('route_list') }}">GO UP</a>
-
+    <p>
+    <a href="{{ url_for('route_list') }}" id="top_link">GO TO TOP</a>
+    </p>
 </body>
 </html>

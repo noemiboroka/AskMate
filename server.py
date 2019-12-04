@@ -109,7 +109,18 @@ def edit_question(question_id):
         question = data_manager.get_this_question(question_id)
         return render_template('edit_question.html', question_id=question_id, question=question)
 
-#asdasdasdasdasdasdasd
+
+@app.route('/question/<question_id>/edit-answer/<answer_id>', methods=['GET', 'POST'])
+def edit_answer(question_id, answer_id):
+    if request.method == 'POST':
+        update = request.form['message']
+        data_manager.update_answer(update, answer_id)
+        return redirect('/question/'+question_id)
+    elif request.method == 'GET':
+        answer = data_manager.get_this_answer(question_id, answer_id)
+        return render_template('edit_answer.html', answer_id=answer_id, answer=answer, question_id=question_id)
+
+
 """
 
 @app.route("/question/<question_id>")

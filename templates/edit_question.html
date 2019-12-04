@@ -14,8 +14,8 @@
             {% for message in question %}
                 <textarea name="message" id="message" rows="6" cols="40" minlength="10">{{ message.message }}</textarea>
             {% endfor %}
-            <input type="hidden" value="{{ question_id }}" name="question_id" id="question_id" /><br>
-            <input type="submit" value="Submit">
+            <--!input type="hidden" value="{{ question_id }}" name="question_id" id="question_id" /--><br>
+            <button type="submit">Submit</button>
 
         </form>
     {% endblock %}

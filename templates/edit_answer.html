@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Answer</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+</head>
+<body>
+    {% block content %}
+        <a href="/question/{{ question_id }}">Back to question</a>
+        <form method="POST" action="/question/{{ question_id }}/edit-answer/{{ answer_id }}">
+
+            Message:<br>
+            {% for message in answer %}
+                <textarea name="message" id="message" rows="6" cols="40" minlength="10">{{ message.message }}</textarea>
+            {% endfor %}
+            <br>
+            <button type="submit">Submit</button>
+
+        </form>
+    {% endblock %}
+</body>
+</html>

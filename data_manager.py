@@ -137,6 +137,27 @@ def get_this_question(cursor, id_):
     return questions
 
 
+@database_common.connection_handler
+def update_answer(cursor, answer_update, id_):
+    cursor.execute("""
+                    UPDATE answer
+                    SET message =%(answer_update)s
+                    WHERE id= %(id_)s;
+                    """,
+                   {'answer_update': answer_update, 'id_': id_})
+
+
+@database_common.connection_handler
+def get_this_answer(cursor, question_id_, answer_id_):
+    cursor.execute("""
+                    SELECT message FROM answer
+                    WHERE id=%(answer_id_)s AND question_id=%(question_id_)s;
+                    """,
+                   {'question_id_': question_id_, 'answer_id_': answer_id_})
+    answers = cursor.fetchall()
+    return answers
+
+
 def sorted_by_submission_time(list_of_dicts):
     n = len(list_of_dicts)
     for i in range(n):

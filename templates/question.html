@@ -7,15 +7,15 @@
     {% block content %}
         {% for question in questions %}
             <div class="header">
-                <h1>{{question.title}}</h1>
+                <h1>{{ question.title }}</h1>
             </div>
 </head>
 <body>
         <br>
         <h4><p class="question-message">{{ question.message }}</p></h4><br>
-        <p>{{'View Number: '+question.view_number|string}}</p>
-        <p>{{'Votes: '+question.vote_number|string}}</p>
-        <p>{{'Posted: '+question.submission_time|string}} </p>
+        <p>{{ 'View Number: '+question.view_number|string }}</p>
+        <p>{{ 'Votes: '+question.vote_number|string }}</p>
+        <p>{{ 'Posted: '+question.submission_time|string }} </p>
         <p>
             <a href="/">Back to Home</a>
             <a href="/question/{{ question.id }}/new-answer">Add Answer</a>
@@ -26,16 +26,16 @@
 
      <p>Answers:</p>
     {% for answer in answers_list %}
-        <h4><p>{{answer.message}}</p></h4>
+        <h4><p>{{ answer.message }}</p></h4>
         <p>
-            Votes: {{answer.vote_number}}
+            Votes: {{ answer.vote_number }}
             <a href="">▲</a>
-            <a href="">▼</a>  Posted: {{answer.submission_time}}
+            <a href="">▼</a>
+            Posted: {{ answer.submission_time }}
             {% for question in questions %}
                 <a href="/answer/{{ question.id }}/delete-answer/{{ answer.id }}">Delete </a>
             {% endfor %}
             <a href="/question/{{ question_id|int }}/edit-answer/{{ answer.id }}">Edit</a>
-
         </p>
     {%endfor%}
 {% endblock %}
